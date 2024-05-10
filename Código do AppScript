@@ -1,0 +1,63 @@
+function transformarDados() {
+  // Defina o separador de células aqui
+  var separadorCelulas = '  '; // Espaço como separador padrão
+
+  // Ative ou desative a detecção automática de linhas
+  var deteccaoAutomaticaLinhas = 'n'; // 's' para ativar, 'n' para desativar
+
+  var dadosOriginais = [
+    // Cole seu texto abaixo:
+    "Exemplo 1",
+    "Exemplo 2"
+  ]; 
+
+  var planilha = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
+  planilha.clear(); // Limpar qualquer conteúdo anterior
+
+  // Adiciona cabeçalhos à planilha
+  var cabecalhos = ["Título 1", "Título 2"];
+  planilha.appendRow(cabecalhos);
+
+  // Iterar sobre os dados originais
+  for (var i = 0; i < dadosOriginais.length; i++) {
+    var partes = dadosOriginais[i].split(separadorCelulas);
+    var linha = [];
+    for (var j = 0; j < partes.length; j++) {
+      if (j === 0) {
+        linha.push(partes[j].trim()); // Adiciona o número
+      } else if (j === 1) {
+        linha.push(partes[j].trim()); // Adiciona o nome do programa
+      } else if (j === 2) {
+        linha.push(parseFloat(partes[j].trim())); // Adiciona as visualizações
+      }
+    }
+    planilha.appendRow(linha); // Adiciona a linha à planilha
+  }
+
+  formatar(planilha);
+}
+
+function formatar(planilha) {
+  var ultimaColuna = planilha.getLastColumn();
+  var ultimaLinha = planilha.getLastRow();
+
+  // Define a fonte como "Lora" e tamanho 13 para toda a planilha
+  planilha.getRange(1, 1, ultimaLinha, ultimaColuna).setFontFamily("Lora").setFontSize(13);
+
+  // Alterar a cor da fonte apenas na linha 1
+  planilha.getRange(1, 1, 1, ultimaColuna).setFontColor("#000000");
+
+  // Colorir a primeira linha inteira com fonte de tamanho 16 e opacidade
+  planilha.getRange(1, 1, 1, ultimaColuna).setBackground("#228dff").setFontColor("#fff").setFontFamily("Lora").setFontSize(16);
+
+  // Alternância de cores em toda a tabela com opacidade reduzida
+  for (var i = 2; i <= ultimaLinha; i++) {
+    var cor;
+    if (i % 2 == 0) {
+      cor = "#cce0ff"; // Cor de fundo para linhas pares
+    } else {
+      cor = "#ffffff"; // Cor de fundo para linhas ímpares
+    }
+      planilha.getRange(i, 1, 1, ultimaColuna).setBackground(cor).setFontColor("#000000").setFontSize(13);
+}
