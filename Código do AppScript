@@ -60,4 +60,4 @@ function formatar(planilha) {
       cor = "#ffffff"; // Cor de fundo para linhas ímpares
     }
       planilha.getRange(i, 1, 1, ultimaColuna).setBackground(cor).setFontColor("#000000").setFontSize(13);
-}
+}}
